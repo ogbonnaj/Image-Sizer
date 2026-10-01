@@ -1,0 +1,74 @@
+name: Build Image Sizer APK
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-android:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+          cache-dependency-path: requirements-build.txt
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: gradle
+
+      - name: Install Android build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            git \
+            zip \
+            unzip \
+            libffi-dev \
+            libssl-dev \
+            autoconf \
+            automake \
+            libtool \
+            pkg-config \
+            zlib1g-dev
+
+      - name: Install Buildozer toolchain
+        run: python -m pip install --upgrade pip && python -m pip install -r requirements-build.txt
+
+      # Cache Buildozer/p4a downloads and Gradle artifacts so later builds are faster.
+      - name: Cache Buildozer and Android downloads
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.buildozer
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-imagesizer-${{ hashFiles('buildozer.spec', 'requirements-build.txt', 'requirements.txt', 'main.py') }}
+          restore-keys: |
+            ${{ runner.os }}-imagesizer-
+
+      - name: Build debug APK
+        run: buildozer -v android debug
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Image-Sizer-APK
+          path: bin/*.apk
+          if-no-files-found: error
+          retention-days: 14

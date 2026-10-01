@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+
+# Kivy / Buildozer
+.buildozer/
+bin/
+*.apk
+*.aab
+*.apks
+
+# Build / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Local app state and logs
+ImageSizer/
+image_sizer_error.log
+image_sizer_state.json
+image_sizer_state_corrupt.json
+image_sizer_state.json.tmp
+image_sizer_cache/
+
+# IDE / OS
+.vscode/
+.idea/
+*.iml
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
