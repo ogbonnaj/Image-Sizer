@@ -1,78 +1,68 @@
 [app]
-# Image Sizer v5 - Android build configuration
-# GitHub Actions builds a debug APK automatically.
 
-# (str) Title of your application
+# App name
 title = Image Sizer
 
-# (str) Package name
+# Package name
 package.name = imagesizer
 
-# (str) Package domain (used for Android application ID)
-package.domain = org.imagesizer
+# Package domain
+package.domain = org.ogbonnaj
 
-# (str) Source code directory
+# Source directory
 source.dir = .
 
+# Main Python file
+source.main = main.py
 
-# (str) Application version
-version = 5.0.0
+# Application version
+version = 1.0.0
 
-# (str) Source file extensions to include
-source.include_exts = py,png,jpg,jpeg,json,kv,atlas,txt
+# Python dependencies
+# Pin Python to 3.13 to avoid the Python 3.14 Android
+# compilation issue seen in the GitHub Actions build.
+requirements = python3==3.13.5,hostpython3==3.13.5,kivy,pillow
 
-# (str) Application icon
-icon.filename = %(source.dir)s/icon.png
-
-# (str) Presplash image (not required)
-# presplash.filename = %(source.dir)s/presplash.png
-
-# (list) Application requirements
-requirements = python3,kivy,pillow
-
-# (str) Orientation
+# Orientation
 orientation = landscape
 
-# (bool) Fullscreen application
-fullscreen = 1
-
-# (str) Supported Android architectures
-android.archs = arm64-v8a
-
-# (int) Android API used to compile the app
+# Android configuration
 android.api = 35
-
-# (int) Minimum supported Android API
 android.minapi = 23
 
-# (str) Android permissions needed by the existing image browser/storage flow.
-# READ_MEDIA_IMAGES is used by Android 13+; the legacy permissions cover older devices.
-android.permissions = READ_MEDIA_IMAGES,READ_MEDIA_VIDEO,READ_EXTERNAL_STORAGE,WRITE_EXTERNAL_STORAGE
+# Android architecture
+android.archs = arm64-v8a
 
-# Keep the Android app lightweight and predictable.
-android.accept_sdk_license = True
-android.allow_backup = True
+# Android permissions
+android.permissions = READ_MEDIA_IMAGES,READ_MEDIA_VIDEO
 
-# (str) Android activity configuration
-android.activity_class_name = org.kivy.android.PythonActivity
+# Fullscreen
+fullscreen = 1
 
-# (bool) Do not automatically show a console window on desktop builds
+# Presplash
+presplash.filename = %(source.dir)s/icon.png
+
+# Application icon
+icon.filename = %(source.dir)s/icon.png
+
+# Android entry point
+android.entrypoint = org.kivy.android.PythonActivity
+
+# Android backup
+android.allow_backup = False
+
+# Android theme
+android.aminapi = 23
+
+# Log level
 log_level = 2
 
-# (str) Python-for-Android bootstrap
-p4a.bootstrap = sdl2
-
-# (bool) Keep build artifacts outside the source tree's tracked files.
 
 [buildozer]
-# (int) Log level (0 = error, 1 = warning, 2 = info, 3 = debug)
+
+# Build output/log directory
 log_level = 2
 
-# (int) Display warnings about configuration options
+# Warning: Buildozer will create .buildozer locally.
+# It should remain ignored by .gitignore.
 warn_on_root = 1
-
-# (str) Build directory
-build_dir = .buildozer
-
-# (str) Output directory
-bin_dir = bin
