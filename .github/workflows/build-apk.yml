@@ -1,37 +1,33 @@
-name: Build Image Sizer APK
+name: Build Android APK
 
 on:
   push:
-    branches: [ "main", "master" ]
-  pull_request:
+    branches:
+      - main
   workflow_dispatch:
-
-permissions:
-  contents: read
 
 jobs:
   build-android:
     runs-on: ubuntu-22.04
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-          cache: "pip"
+          cache: pip
           cache-dependency-path: requirements-build.txt
 
       - name: Set up Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: "17"
-          cache: gradle
 
-      - name: Install Android build dependencies
+      - name: Install system dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y \
@@ -39,36 +35,35 @@ jobs:
             git \
             zip \
             unzip \
-            libffi-dev \
-            libssl-dev \
+            openjdk-17-jdk \
             autoconf \
             automake \
             libtool \
             pkg-config \
-            zlib1g-dev
+            zlib1g-dev \
+            libncurses5-dev \
+            libncursesw5-dev \
+            cmake \
+            libffi-dev \
+            libssl-dev
 
-      - name: Install Buildozer toolchain
-        run: python -m pip install --upgrade pip && python -m pip install -r requirements-build.txt
+      - name: Install Python build tools
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          pip install -r requirements-build.txt
 
-      # Cache Buildozer/p4a downloads and Gradle artifacts so later builds are faster.
-      - name: Cache Buildozer and Android downloads
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.buildozer
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-imagesizer-${{ hashFiles('buildozer.spec', 'requirements-build.txt', 'requirements.txt', 'main.py') }}
-          restore-keys: |
-            ${{ runner.os }}-imagesizer-
+      - name: Build APK with Buildozer
+        run: |
+          buildozer android debug
 
-      - name: Build debug APK
-        run: buildozer -v android debug
+      - name: Find APK
+        run: |
+          echo "APK files:"
+          find bin -type f -name "*.apk" -print
 
-      - name: Upload APK artifact
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: Image-Sizer-APK
+          name: Image-Sizer-Android-APK
           path: bin/*.apk
           if-no-files-found: error
-          retention-days: 14
