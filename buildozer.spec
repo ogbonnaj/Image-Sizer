@@ -1,74 +1,100 @@
 [app]
 
-# Application name
+# ---------------------------------------------------------
+# Application
+# ---------------------------------------------------------
+
 title = Image Sizer
-
-# Package name
 package.name = imagesizer
-
-# Package domain
 package.domain = org.ogbonnaj
 
-# Source directory
 source.dir = .
-
-# Main Python file
 source.main = main.py
 
-# Files required by the application
-source.include_exts = py,png,jpg,jpeg,kv,atlas,json,txt
-
-# Application version
 version = 1.0.0
 
-# Python-for-Android requirements
+# Include the files used by the application
+source.include_exts = py,png,jpg,jpeg,kv,atlas,json,txt
+
+# ---------------------------------------------------------
+# Python / Kivy dependencies
+# ---------------------------------------------------------
+
 requirements = python3,kivy,pillow
 
-# Use the stable Python-for-Android branch
+# Use the stable python-for-android branch.
 p4a.branch = master
 
-# Screen orientation
-orientation = landscape
+# SDL2 is the normal Kivy Android bootstrap.
+p4a.bootstrap = sdl2
 
-# Fullscreen application
+# ---------------------------------------------------------
+# Screen / appearance
+# ---------------------------------------------------------
+
+orientation = landscape
 fullscreen = 1
 
-# Application icon
 icon.filename = %(source.dir)s/icon.png
-
-# Android presplash
 presplash.filename = %(source.dir)s/icon.png
 
-# Android API
+# ---------------------------------------------------------
+# Android SDK / NDK
+# ---------------------------------------------------------
+
+# Android target API
 android.api = 35
 
-# Minimum Android API
+# Minimum Android version
 android.minapi = 23
 
-# Android NDK
+# NDK version used by the Android build
 android.ndk = 28c
 
-# NDK API
+# NDK API must match the minimum API used by the build
 android.ndk_api = 23
 
-# Android architecture
+# Build only for modern 64-bit Android devices
 android.archs = arm64-v8a
 
-# Automatically accept Android SDK licenses
-# Required for unattended GitHub Actions builds
+# Automatically accept SDK licenses in GitHub Actions
 android.accept_sdk_license = True
 
-# Android entry point
+# ---------------------------------------------------------
+# Android application
+# ---------------------------------------------------------
+
 android.entrypoint = org.kivy.android.PythonActivity
 
-# Android permissions
-android.permissions = READ_MEDIA_IMAGES,READ_MEDIA_VIDEO
-
-# Disable Android backup
 android.allow_backup = False
 
-# Don't automatically update SDK packages unnecessarily
+# Keep the app in landscape
+android.orientation = landscape
+
+# ---------------------------------------------------------
+# Permissions
+# ---------------------------------------------------------
+
+android.permissions = READ_MEDIA_IMAGES,READ_MEDIA_VIDEO
+
+# ---------------------------------------------------------
+# Build behavior
+# ---------------------------------------------------------
+
+# APK for debug builds
+android.debug_artifact = apk
+
+# AAB for release builds
+android.release_artifact = aab
+
+# Allow Buildozer to update/download required SDK components
 android.skip_update = False
+
+# ---------------------------------------------------------
+# Logging
+# ---------------------------------------------------------
+
+log_level = 2
 
 
 [buildozer]
@@ -76,5 +102,5 @@ android.skip_update = False
 # Buildozer logging
 log_level = 2
 
-# Warn when Buildozer is run as root
+# Warn instead of silently allowing root builds
 warn_on_root = 1
