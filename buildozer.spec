@@ -1,6 +1,6 @@
 [app]
 
-# App name
+# Application name
 title = Image Sizer
 
 # Package name
@@ -15,54 +15,66 @@ source.dir = .
 # Main Python file
 source.main = main.py
 
+# Files required by the application
+source.include_exts = py,png,jpg,jpeg,kv,atlas,json,txt
+
 # Application version
 version = 1.0.0
 
-# Python dependencies
-# Pin Python to 3.13 to avoid the Python 3.14 Android
-# compilation issue seen in the GitHub Actions build.
-requirements = python3==3.13.5,hostpython3==3.13.5,kivy,pillow
+# Python-for-Android requirements
+requirements = python3,kivy,pillow
 
-# Orientation
+# Use the stable Python-for-Android branch
+p4a.branch = master
+
+# Screen orientation
 orientation = landscape
 
-# Android configuration
-android.api = 35
-android.minapi = 23
-
-# Android architecture
-android.archs = arm64-v8a
-
-# Android permissions
-android.permissions = READ_MEDIA_IMAGES,READ_MEDIA_VIDEO
-
-# Fullscreen
+# Fullscreen application
 fullscreen = 1
-
-# Presplash
-presplash.filename = %(source.dir)s/icon.png
 
 # Application icon
 icon.filename = %(source.dir)s/icon.png
 
+# Android presplash
+presplash.filename = %(source.dir)s/icon.png
+
+# Android API
+android.api = 35
+
+# Minimum Android API
+android.minapi = 23
+
+# Android NDK
+android.ndk = 28c
+
+# NDK API
+android.ndk_api = 23
+
+# Android architecture
+android.archs = arm64-v8a
+
+# Automatically accept Android SDK licenses
+# Required for unattended GitHub Actions builds
+android.accept_sdk_license = True
+
 # Android entry point
 android.entrypoint = org.kivy.android.PythonActivity
 
-# Android backup
+# Android permissions
+android.permissions = READ_MEDIA_IMAGES,READ_MEDIA_VIDEO
+
+# Disable Android backup
 android.allow_backup = False
 
-# Android theme
-android.aminapi = 23
-
-# Log level
-log_level = 2
+# Don't automatically update SDK packages unnecessarily
+android.skip_update = False
 
 
 [buildozer]
 
-# Build output/log directory
+# Buildozer logging
 log_level = 2
 
-# Warning: Buildozer will create .buildozer locally.
-# It should remain ignored by .gitignore.
+# Warn when Buildozer is run as root
 warn_on_root = 1
