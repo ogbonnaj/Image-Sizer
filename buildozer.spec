@@ -1,8 +1,8 @@
 [app]
 
-# ---------------------------------------------------------
-# Application
-# ---------------------------------------------------------
+# =========================================================
+# IMAGE SIZER
+# =========================================================
 
 title = Image Sizer
 package.name = imagesizer
@@ -13,94 +13,103 @@ source.main = main.py
 
 version = 1.0.0
 
-# Include the files used by the application
+# Include application files and image assets
 source.include_exts = py,png,jpg,jpeg,kv,atlas,json,txt
 
-# ---------------------------------------------------------
-# Python / Kivy dependencies
-# ---------------------------------------------------------
+# =========================================================
+# PYTHON / KIVY
+# =========================================================
 
-requirements = python3,kivy,pillow
+# IMPORTANT:
+# Pin target Python and host Python to EXACTLY the same version.
+#
+# This prevents python-for-android from selecting Python 3.14,
+# which caused the preadv/pwritev Android compilation failure.
 
-# Use the stable python-for-android branch.
+requirements = python3==3.12.9,hostpython3==3.12.9,kivy,pillow
+
+# Stable python-for-android branch
 p4a.branch = master
 
-# SDL2 is the normal Kivy Android bootstrap.
+# Kivy Android bootstrap
 p4a.bootstrap = sdl2
 
-# ---------------------------------------------------------
-# Screen / appearance
-# ---------------------------------------------------------
+# =========================================================
+# DISPLAY
+# =========================================================
 
 orientation = landscape
 fullscreen = 1
 
+# =========================================================
+# APP ICON / SPLASH
+# =========================================================
+
 icon.filename = %(source.dir)s/icon.png
 presplash.filename = %(source.dir)s/icon.png
 
-# ---------------------------------------------------------
-# Android SDK / NDK
-# ---------------------------------------------------------
+# =========================================================
+# ANDROID SDK
+# =========================================================
 
-# Android target API
 android.api = 35
-
-# Minimum Android version
 android.minapi = 23
 
-# NDK version used by the Android build
-android.ndk = 28c
+# =========================================================
+# ANDROID NDK
+# =========================================================
 
-# NDK API must match the minimum API used by the build
+android.ndk = 28c
 android.ndk_api = 23
 
-# Build only for modern 64-bit Android devices
+# =========================================================
+# ARCHITECTURE
+# =========================================================
+
 android.archs = arm64-v8a
 
-# Automatically accept SDK licenses in GitHub Actions
+# =========================================================
+# AUTOMATED GITHUB ACTIONS BUILD
+# =========================================================
+
+# Automatically accept Android SDK licenses.
 android.accept_sdk_license = True
 
-# ---------------------------------------------------------
-# Android application
-# ---------------------------------------------------------
+# Allow Buildozer to install/update required SDK components.
+android.skip_update = False
+
+# =========================================================
+# ANDROID APPLICATION
+# =========================================================
 
 android.entrypoint = org.kivy.android.PythonActivity
 
 android.allow_backup = False
 
-# Keep the app in landscape
+# Keep application in landscape mode.
 android.orientation = landscape
 
-# ---------------------------------------------------------
-# Permissions
-# ---------------------------------------------------------
+# =========================================================
+# PERMISSIONS
+# =========================================================
 
 android.permissions = READ_MEDIA_IMAGES,READ_MEDIA_VIDEO
 
-# ---------------------------------------------------------
-# Build behavior
-# ---------------------------------------------------------
+# =========================================================
+# BUILD OUTPUT
+# =========================================================
 
-# APK for debug builds
 android.debug_artifact = apk
-
-# AAB for release builds
 android.release_artifact = aab
 
-# Allow Buildozer to update/download required SDK components
-android.skip_update = False
-
-# ---------------------------------------------------------
-# Logging
-# ---------------------------------------------------------
+# =========================================================
+# BUILD LOGGING
+# =========================================================
 
 log_level = 2
 
 
 [buildozer]
 
-# Buildozer logging
 log_level = 2
-
-# Warn instead of silently allowing root builds
 warn_on_root = 1
