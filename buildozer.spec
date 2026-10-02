@@ -53,14 +53,14 @@ presplash.filename = %(source.dir)s/icon.png
 # =========================================================
 
 android.api = 35
-android.minapi = 23
+android.minapi = 26
 
 # =========================================================
 # ANDROID NDK
 # =========================================================
 
 android.ndk = 28c
-android.ndk_api = 23
+android.ndk_api = 26
 
 # =========================================================
 # ARCHITECTURE
